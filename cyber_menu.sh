@@ -76,7 +76,7 @@ dibujar_banner() {
     echo -e " [3] MIS HERRAMIENTAS INSTALADAS (Launcher inteligente) 🚀"
     echo -e " [4] Cambiar o editar este Banner/Menú"
     echo -e " [5] Lista de todos los paquetes pkg disponibles"
-    echo -e " [6] Salir al modo normal de Termux"
+    echo -e " [6] Salir y cerrar Termux por completo ❌"
     echo -e " [7] CIBERSEGURIDAD Y AUDITORÍA (Auto-instala dependencias) 🛡️"
     echo -e " [8] ENCYCLOPEDIA LINUX & TERMUX 📚"
     echo -e " [9] ELIMINAR HERRAMIENTAS DESCARGADAS 🗑️"
@@ -305,29 +305,12 @@ while true; do
             pausar_y_limpiar ;;
         6|exit|quit)
             clear
-            echo -e "Welcome to Termux!"
-            echo ""
-            echo -e "Wiki:            https://termux.dev/wiki"
-            echo -e "Community forum: https://termux.dev/community"
-            echo -e "Gitter chat:     https://termux.dev/gitter"
-            echo -e "IRC channel:     #termux on libera.chat"
-            echo ""
-            echo -e "Working with packages:"
-            echo ""
-            echo -e "  Search packages:   pkg search <query>"
-            echo -e "  Install a package: pkg install <package>"
-            echo -e "  Upgrade packages:  pkg upgrade"
-            echo ""
-            echo -e "Subscribing to additional repositories:"
-            echo ""
-            echo -e "  Root: main, x11, tur, science, game"
-            echo ""
-            echo -e "Report issues at https://termux.dev/issues"
-            echo ""
-            echo -e "${COLOR_INFO}==================================================${COLOR_NORMAL}"
-            echo -e "${COLOR_ALERTA}💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' para reactivar tu entorno ZiP-Cyber.${COLOR_NORMAL}"
-            echo -e "${COLOR_INFO}==================================================${COLOR_NORMAL}\n"
-            export PS1="\$ "
+            echo -e "${COLOR_ALERTA}==================================================${COLOR_NORMAL}"
+            echo -e "       🦊 ¡Gracias por usar ZiP-Cyber! 🦊"
+            echo -e "          Cerrando la aplicación... 👋"
+            echo -e "${COLOR_ALERTA}==================================================${COLOR_NORMAL}\n"
+            sleep 1.2
+            kill -9 $PPID
             break ;;
         clear)
             clear
@@ -377,19 +360,12 @@ while true; do
                 echo -e "${COLOR_INFO}[*] Ejecutando comando...${COLOR_NORMAL}\n"
                 eval "$opcion_principal"
                 
-                # ==============================================================
-                # 🛡️ MOTOR INTELIGENTE ANTI-BLOQUES DE ANDROID
-                # ==============================================================
-                # Mantiene viva la lectura directa mientras lleguen líneas 
-                # con una diferencia menor a 100ms. Evita cierres y saltos de pausas.
                 while read -t 0.1 linea_siguiente; do
                     if [ -n "$linea_siguiente" ]; then
                         eval "$linea_siguiente"
                     fi
                 done
                 
-                # Una vez que la ráfaga de pegado se detenga por completo, 
-                # valida si se cambió de directorio o si requiere pausa limpia.
                 if read -t 0; then
                     SKIP_BANNER=true
                 else
