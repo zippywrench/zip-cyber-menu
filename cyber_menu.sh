@@ -71,15 +71,17 @@ dibujar_banner() {
     echo -e "\e[1;32m======================================================================"
     echo -e " 🛠️  ZIPPLAY CYBER-MENU (Escribe el número o cualquier comando)" | pv -qL 30
     echo -e "======================================================================"
-    echo -e " [1] Actualizar listas de paquetes y repositorios de Termux"
-    echo -e " [2] Ver comandos de ayuda de Termux (help)"
+    echo -e " [1] Actualizar listas de paquetes y repositorios de Termux 🔄"
+    echo -e " [2] Ver comandos de ayuda de Termux (help) ❓"
     echo -e " [3] MIS HERRAMIENTAS INSTALADAS (Launcher inteligente) 🚀"
-    echo -e " [4] Cambiar o editar este Banner/Menú"
-    echo -e " [5] Lista de todos los paquetes pkg disponibles"
-    echo -e " [6] Salir y cerrar Termux por completo ❌"
+    echo -e " [4] Cambiar o editar este Banner/Menú 📝"
+    echo -e " [5] Lista de todos los paquetes pkg disponibles 📦"
+    echo -e " [6] Salir al modo normal de Termux (Línea de comandos) 💻"
     echo -e " [7] CIBERSEGURIDAD Y AUDITORÍA (Auto-instala dependencias) 🛡️"
     echo -e " [8] ENCYCLOPEDIA LINUX & TERMUX 📚"
     echo -e " [9] ELIMINAR HERRAMIENTAS DESCARGADAS 🗑️"
+    echo -e "----------------------------------------------------------------------"
+    echo -e " [0] Cerrar la aplicación de Termux por completo ❌"
     echo -e "======================================================================\e[0m"
     echo ""
 }
@@ -92,13 +94,13 @@ submenu_ciberseguridad() {
         echo -e "--------------------------------------------------"
         echo -e " [Paquetes se auto-instalarán si faltan]"
         echo -e "==================================================${COLOR_NORMAL}"
-        echo -e " [1] Nmap (Mapeo y escaneo de puertos de red)"
-        echo -e " [2] TShark (Captura de tráfico - Requiere ROOT)"
-        echo -e " [3] Nikto (Escaneo de vulnerabilidades web)"
-        echo -e " [4] Sqlmap (Auditoría de inyección SQL)"
-        echo -e " [5] Whois (Consulta de datos de dominios)"
+        echo -e " [1] Nmap (Mapeo y escaneo de puertos de red) 🌐"
+        echo -e " [2] TShark (Captura de tráfico - Requiere ROOT) 🦈"
+        echo -e " [3] Nikto (Escaneo de vulnerabilidades web) 🕸️"
+        echo -e " [4] Sqlmap (Auditoría de inyección SQL) 🛢️"
+        echo -e " [5] Whois (Consulta de datos de dominios) 🔍"
         echo -e "--------------------------------------------------"
-        echo -e " [0] Volver al menú principal"
+        echo -e " [0] Volver al menú principal 🔙"
         echo -e "--------------------------------------------------"
         echo ""
         read -p "ZiP Code > " op_sec
@@ -142,12 +144,12 @@ submenu_enciclopedia() {
         echo -e "--------------------------------------------------"
         echo -e " Selecciona una categoría para estudiar los comandos:"
         echo -e "==================================================${COLOR_NORMAL}"
-        echo -e " [1] Navegación y Carpetas (Moverse, crear, ver)"
-        echo -e " [2] Gestión de Archivos (Copiar, renombrar, borrar)"
-        echo -e " [3] Paquetes de Termux (Instalar y buscar herramientas)"
-        echo -e " [4] Superpoderes de Bash (Permisos y flujos)"
+        echo -e " [1] Navegación y Carpetas (Moverse, crear, ver) 📂"
+        echo -e " [2] Gestión de Archivos (Copiar, renombrar, borrar) 📄"
+        echo -e " [3] Paquetes de Termux (Instalar y buscar herramientas) 📦"
+        echo -e " [4] Superpoderes de Bash (Permisos y flujos) 🚀"
         echo -e "--------------------------------------------------"
-        echo -e " [0] Volver al menú principal"
+        echo -e " [0] Volver al menú principal 🔙"
         echo -e "--------------------------------------------------"
         echo ""
         read -p "ZiP Guide > " op_guia
@@ -216,7 +218,7 @@ submenu_lanzar_herramienta() {
             echo -e " [$((i+1))] $exec_name"
         done
         echo -e "--------------------------------------------------"
-        echo -e "  [0] para Cancelar y volver al menú"
+        echo -e "  [0] para Cancelar y volver al menú 🔙"
         echo -e "--------------------------------------------------"
         echo ""
         read -p "ZiP tools> " op_exec
@@ -285,7 +287,7 @@ while true; do
                     echo -e " [$((i+1))] $nom_herr"
                 done
                 echo -e "--------------------------------------------------"
-                echo -e "  [0] para Volver al menú principal"
+                echo -e "  [0] para Volver al menú principal 🔙"
                 echo -e "--------------------------------------------------"
                 echo ""
                 read -p "ZiP Tools > " subopcion
@@ -303,13 +305,29 @@ while true; do
         5)
             pkg list-all | column
             pausar_y_limpiar ;;
-        6|exit|quit)
+        6)
+            # SALIDA NATIVA: Regresa al usuario al Termux original
             clear
-            echo -e "${COLOR_ALERTA}==================================================${COLOR_NORMAL}"
-            echo -e "       🦊 ¡Gracias por usar ZiP-Cyber! 🦊"
-            echo -e "          Cerrando la aplicación... 👋"
-            echo -e "${COLOR_ALERTA}==================================================${COLOR_NORMAL}\n"
-            sleep 1.2
+            echo -e "Welcome to Termux!"
+            echo ""
+            echo -e "Wiki:            https://termux.dev/wiki"
+            echo -e "Community forum: https://termux.dev/community"
+            echo ""
+            echo -e "${COLOR_INFO}==================================================${COLOR_NORMAL}"
+            echo -e "${COLOR_ALERTA}💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' para reactivar tu entorno ZiP-Cyber.${COLOR_NORMAL}"
+            echo -e "${COLOR_INFO}==================================================${COLOR_NORMAL}\n"
+            export PS1="\$ "
+            break ;;
+        0|exit|quit)
+            # CIERRE TOTAL: Centrado elegante y destrucción del proceso padre
+            clear
+            echo -e "\n\n\n\n\n\n\n\n"
+            echo -e "     ${COLOR_INFO}==================================================${COLOR_NORMAL}"
+            echo -e "            🦊 ¡Gracias por usar ZiP-Cyber! 🦊"
+            echo -e "               Cerrando la aplicación... 👋"
+            echo -e "     ${COLOR_INFO}==================================================${COLOR_NORMAL}"
+            echo -e "\n\n\n\n\n\n\n"
+            sleep 1.4
             kill -9 $PPID
             break ;;
         clear)
@@ -339,7 +357,7 @@ while true; do
                     echo -e " [$((i+1))] $nom_herr"
                 done
                 echo -e "--------------------------------------------------"
-                echo -e "  [0] para Cancelar y volver"
+                echo -e "  [0] para Cancelar y volver 🔙"
                 echo -e "--------------------------------------------------"
                 echo ""
                 read -p "Elige el número a BORRAR: " delopcion
