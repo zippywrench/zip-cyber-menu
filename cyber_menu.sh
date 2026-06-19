@@ -4,17 +4,40 @@
 # CONFIGURACIÓN DEL ENTORNO DE TRABAJO "ZIPPLAY CYBER-MENU"
 # ==============================================================================
 
-# Guardar la ruta inicial de Termux para evitar perderse al navegar
 DIRECTORIO_RAIZ="$HOME"
 
-# Definir colores para uso rápido en mensajes
 COLOR_NORMAL="\e[0m"
 COLOR_INFO="\e[1;36m"    # Cyan
 COLOR_ALERTA="\e[1;33m" # Amarillo
 COLOR_ERROR="\e[1;31m"  # Rojo
 COLOR_EXITO="\e[1;32m"  # Verde
 
-# Función para verificar e instalar paquetes de pkg
+# ==============================================================================
+# 🚀 FUNCIÓN AUTOMÁTICA DE BIENVENIDA Y AUTO-INSTALACIÓN (PORTABILIDAD)
+# ==============================================================================
+preparar_entorno() {
+    clear
+    echo -e "${COLOR_INFO}[*] Analizando el sistema Termux...${COLOR_NORMAL}"
+    echo -e "${COLOR_INFO}[*] Verificando dependencias globales para ZiP-Cyber...${COLOR_NORMAL}\n"
+    
+    # Lista de herramientas críticas que el menú necesita para no romperse en un móvil nuevo
+    local dependencias=("pv" "curl" "python" "git" "nmap")
+    local instalada_alguna=false
+
+    for dep in "${dependencias[@]}"; do
+        if ! command -v "$dep" &> /dev/null; then
+            echo -e "${COLOR_ALERTA}[!] Falta componente crítico: '$dep'. Instalando automáticamente...${COLOR_NORMAL}"
+            pkg install "$dep" -y
+            instalada_alguna=true
+        fi
+    done
+
+    if [ "$instalada_alguna" = true ]; then
+        echo -e "\n${COLOR_EXITO}[+] ¡Todo listo! Todos los componentes han sido configurados.${COLOR_NORMAL}"
+        sleep 2
+    fi
+}
+
 check_install_pkg() {
     local comando=$1
     local paquete=$2
@@ -32,13 +55,11 @@ check_install_pkg() {
     return 0
 }
 
-# Función para pausar y limpiar la pantalla
 pausar_y_limpiar() {
     echo ""
     read -p "Presiona Enter para volver..." env_var
 }
 
-# Función para dibujar el Banner principal en pantalla
 dibujar_banner() {
     clear
     echo -e "\e[1;36m███████╗      \e[38;5;208m  ▄▄        ▄▄          \e[1;36m██╗  ██╗ █████╗  ██████╗██╗   ██╗"
@@ -53,7 +74,7 @@ dibujar_banner() {
     echo -e "\e[1;32m======================================================================"
     echo -e " 🛠️  ZIPPLAY CYBER-MENU (Escribe el número o cualquier comando)" | pv -qL 30
     echo -e "======================================================================"
-    echo -e " [1] Buscar e instalar todas las actualizaciones del sistema"
+    echo -e " [1] Actualizar listas de paquetes y repositorios de Termux"
     echo -e " [2] Ver comandos de ayuda de Termux (help)"
     echo -e " [3] MIS HERRAMIENTAS INSTALADAS (Launcher inteligente) 🚀"
     echo -e " [4] Cambiar o editar este Banner/Menú"
@@ -66,7 +87,6 @@ dibujar_banner() {
     echo ""
 }
 
-# Submenú interactivo de Ciberseguridad (Opción 7)
 submenu_ciberseguridad() {
     while true; do
         clear
@@ -117,7 +137,6 @@ submenu_ciberseguridad() {
     done
 }
 
-# Submenú interactivo de la Enciclopedia (Opción 8)
 submenu_enciclopedia() {
     while true; do
         clear
@@ -178,7 +197,6 @@ submenu_enciclopedia() {
     done
 }
 
-# Lanzador inteligente de herramientas (Opción 3)
 submenu_lanzar_herramienta() {
     local carpeta_herr=$1
     clear
@@ -230,14 +248,17 @@ submenu_lanzar_herramienta() {
 # ==============================================================================
 export PS1="\e[1;36mZiP Code > \e[0m"
 
+# Llama a la comprobación de dependencias ANTES de mostrar el banner
+preparar_entorno
+
 while true; do
     dibujar_banner
     read -p "ZiP Code > " opcion_principal
 
     case "$opcion_principal" in
         1)
-            echo -e "${COLOR_INFO}[*] Buscando actualizaciones...${COLOR_NORMAL}"
-            pkg update -y && pkg upgrade -y
+            echo -e "${COLOR_INFO}[*] Sincronizando repositorios de Termux...${COLOR_NORMAL}"
+            pkg update -y
             pausar_y_limpiar ;;
         2)
             help
@@ -250,7 +271,6 @@ while true; do
             echo -e " Selecciona una carpeta de herramienta"
             echo -e "==================================================${COLOR_NORMAL}"
             
-            # Filtro inteligente: Lista carpetas EXCLUYENDO zip-cyber-menu
             herramientas=($(ls -d */ 2>/dev/null | grep -v "zip-cyber-menu"))
             
             if [ ${#herramientas[@]} -eq 0 ]; then
@@ -284,11 +304,8 @@ while true; do
         6)
             clear
             echo -e "\e[0;32mWelcome to Termux!\e[0m\n"
-            echo -e "Wiki:            https://termux.dev/wiki"
-            echo -e "Community forum: https://termux.dev/community\n"
-            echo -e "${COLOR_INFO}==================================================${COLOR_NORMAL}"
-            echo -e "${COLOR_ALERTA}💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' y presiona Enter para volver a tu banner.${COLOR_NORMAL}"
-            echo -e "${COLOR_INFO}==================================================${COLOR_NORMAL}\n"
+            echo -e "⚠️  Menú en pausa."
+            echo -e "💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' para reactivar tu entorno ZiP-Cyber.${COLOR_NORMAL}\n"
             export PS1="\$ "
             break ;;
         7)
@@ -331,7 +348,6 @@ while true; do
             fi
             ;;
         *)
-            # Si el usuario escribe cualquier comando normal de Linux/Termux (ej: ls, cd, clear, etc.)
             if [ -n "$opcion_principal" ]; then
                 echo -e "${COLOR_INFO}[*] Ejecutando comando del sistema...${COLOR_NORMAL}"
                 echo ""
