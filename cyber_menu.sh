@@ -12,15 +12,12 @@ COLOR_ALERTA="\e[1;33m" # Amarillo
 COLOR_ERROR="\e[1;31m"  # Rojo
 COLOR_EXITO="\e[1;32m"  # Verde
 
-# ==============================================================================
-# 🚀 FUNCIÓN AUTOMÁTICA DE BIENVENIDA Y AUTO-INSTALACIÓN (PORTABILIDAD)
-# ==============================================================================
+# Función automática de bienvenida y auto-instalación
 preparar_entorno() {
     clear
     echo -e "${COLOR_INFO}[*] Analizando el sistema Termux...${COLOR_NORMAL}"
     echo -e "${COLOR_INFO}[*] Verificando dependencias globales para ZiP-Cyber...${COLOR_NORMAL}\n"
     
-    # Lista de herramientas críticas que el menú necesita para no romperse en un móvil nuevo
     local dependencias=("pv" "curl" "python" "git" "nmap")
     local instalada_alguna=false
 
@@ -248,11 +245,16 @@ submenu_lanzar_herramienta() {
 # ==============================================================================
 export PS1="\e[1;36mZiP Code > \e[0m"
 
-# Llama a la comprobación de dependencias ANTES de mostrar el banner
 preparar_entorno
+SKIP_BANNER=false
 
 while true; do
-    dibujar_banner
+    if [ "$SKIP_BANNER" = true ]; then
+        SKIP_BANNER=false
+    else
+        dibujar_banner
+    fi
+    
     read -p "ZiP Code > " opcion_principal
 
     case "$opcion_principal" in
@@ -301,13 +303,36 @@ while true; do
         5)
             pkg list-all | column
             pausar_y_limpiar ;;
-        6)
+        6|exit|quit)
             clear
-            echo -e "\e[0;32mWelcome to Termux!\e[0m\n"
-            echo -e "⚠️  Menú en pausa."
-            echo -e "💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' para reactivar tu entorno ZiP-Cyber.${COLOR_NORMAL}\n"
+            echo -e "Welcome to Termux!"
+            echo ""
+            echo -e "Wiki:            https://termux.dev/wiki"
+            echo -e "Community forum: https://termux.dev/community"
+            echo -e "Gitter chat:     https://termux.dev/gitter"
+            echo -e "IRC channel:     #termux on libera.chat"
+            echo ""
+            echo -e "Working with packages:"
+            echo ""
+            echo -e "  Search packages:   pkg search <query>"
+            echo -e "  Install a package: pkg install <package>"
+            echo -e "  Upgrade packages:  pkg upgrade"
+            echo ""
+            echo -e "Subscribing to additional repositories:"
+            echo ""
+            echo -e "  Root: main, x11, tur, science, game"
+            echo ""
+            echo -e "Report issues at https://termux.dev/issues"
+            echo ""
+            echo -e "${COLOR_INFO}==================================================${COLOR_NORMAL}"
+            echo -e "${COLOR_ALERTA}💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' para reactivar tu entorno ZiP-Cyber.${COLOR_NORMAL}"
+            echo -e "${COLOR_INFO}==================================================${COLOR_NORMAL}\n"
             export PS1="\$ "
             break ;;
+        clear)
+            clear
+            SKIP_BANNER=false
+            ;;
         7)
             submenu_ciberseguridad ;;
         8)
@@ -349,10 +374,27 @@ while true; do
             ;;
         *)
             if [ -n "$opcion_principal" ]; then
-                echo -e "${COLOR_INFO}[*] Ejecutando comando del sistema...${COLOR_NORMAL}"
-                echo ""
+                echo -e "${COLOR_INFO}[*] Ejecutando comando...${COLOR_NORMAL}\n"
                 eval "$opcion_principal"
-                pausar_y_limpiar
+                
+                # ==============================================================
+                # 🛡️ MOTOR INTELIGENTE ANTI-BLOQUES DE ANDROID
+                # ==============================================================
+                # Mantiene viva la lectura directa mientras lleguen líneas 
+                # con una diferencia menor a 100ms. Evita cierres y saltos de pausas.
+                while read -t 0.1 linea_siguiente; do
+                    if [ -n "$linea_siguiente" ]; then
+                        eval "$linea_siguiente"
+                    fi
+                done
+                
+                # Una vez que la ráfaga de pegado se detenga por completo, 
+                # valida si se cambió de directorio o si requiere pausa limpia.
+                if read -t 0; then
+                    SKIP_BANNER=true
+                else
+                    pausar_y_limpiar
+                fi
             fi
             ;;
     esac
