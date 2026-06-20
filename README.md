@@ -1,4 +1,4 @@
-                                                          
+.                                                   
        ::                                        ::       
       --  =.                                  .=. --      
       =:   -=.:                            :.=:   .=      
@@ -31,10 +31,7 @@
              :   --:  .. ..    .. ..  :--.  :             
                  .:.  ..............  .:.                 
                    .   .. ..:... ..   .                   
-                           ..:.                           
-                            ..     
-
-
+                           ..:.                         
 # 🦊 ZIP-CYBER-MENU
 
 Una interfaz visual mejorada y optimizada para Termux que centraliza la administración de herramientas del sistema, 
