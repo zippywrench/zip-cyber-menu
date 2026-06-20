@@ -406,7 +406,7 @@ while true; do
                     echo -e "Wiki:            https://termux.dev"
                     echo -e "Community forum: https://termux.dev"
                     echo -e "--------------------------------------------------"
-                    echo -e "${COLOR_ALERTA} 💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' para reactivar tu entorno seguro${COLOR_NORMAL}/escribe'${COLOR_EXITO}exit${COLOR_ALERTA}' para salir de la proteccion${COLOR_NORMAL}"| pv -qL 25
+                    echo -e "${COLOR_ALERTA} 💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' para reactivar tu entorno seguro${COLOR_NORMAL}/ escribe '${COLOR_EXITO}exit${COLOR_ALERTA}' para salir de la proteccion${COLOR_NORMAL}"| pv -qL 25
                     echo -e "--------------------------------------------------"
                     
                     # Línea de comandos simulada nativa (A prueba de tontos y libre de alias externos)
