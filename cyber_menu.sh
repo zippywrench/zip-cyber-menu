@@ -1,28 +1,32 @@
 #!/bin/bash
 
 # ==============================================================================
-# CONFIGURACIÓN DEL ENTORNO DE TRABAJO "ZIPPLAY CYBER-MENU"
+# CONFIGURACIÓN DEL ENTORNO DE TRABAJO "ZIPPLAY CYBER-MENU" V3.0
 # ==============================================================================
 
-DIRECTORIO_RAIZ="$HOME"
+DIRECTORIO_RAIZ="$HOME[span_3](start_span)"[span_3](end_span)
+CARPETA_NATIVAS="$HOME/zip-cyber-menu/nativas"
 
-COLOR_NORMAL="\e[0m"
-COLOR_INFO="\e[1;36m"    # Cyan
-COLOR_ALERTA="\e[1;33m" # Amarillo
-COLOR_ERROR="\e[1;31m"  # Rojo
-COLOR_EXITO="\e[1;32m"  # Verde
+COLOR_NORMAL="\e[0m[span_4](start_span)"[span_4](end_span)
+COLOR_INFO="\e[1;36m"    # Cyan[span_5](start_span)[span_5](end_span)
+COLOR_ALERTA="\e[1;33m" # Amarillo[span_6](start_span)[span_6](end_span)
+COLOR_ERROR="\e[1;31m"  # Rojo[span_7](start_span)[span_7](end_span)
+COLOR_EXITO="\e[1;32m"  # Verde[span_8](start_span)[span_8](end_span)
 
-# Función automática de bienvenida y auto-instalación
+# Asegurar que la carpeta de herramientas nativas exista antes de iniciar
+mkdir -p "$CARPETA_NATIVAS"
+
 preparar_entorno() {
     clear
-    echo -e "${COLOR_INFO}[*] Analizando el sistema Termux...${COLOR_NORMAL}"
-    echo -e "${COLOR_INFO}[*] Verificando dependencias globales para ZiP-Cyber...${COLOR_NORMAL}\n"
+    echo -e "${COLOR_INFO}[*] Analizando el sistema Termux...${COLOR_NORMAL}[span_9](start_span)"[span_9](end_span)
+    echo -e "${COLOR_INFO}[*] Verificando dependencias globales para ZiP-Cyber...${COLOR_NORMAL}\n[span_10](start_span)"[span_10](end_span)
     
-    local dependencias=("pv" "curl" "python" "git" "nmap")
-    local instalada_alguna=false
+    # Añadimos componentes clave para que tu Termux esté súper equipado
+    local dependencias=("pv" "curl" "python" "git" "nmap" "php" "wget" "openssh")[span_11](start_span)[span_11](end_span)
+    local instalada_alguna=false[span_12](start_span)[span_12](end_span)
 
-    for dep in "${dependencias[@]}"; do
-        if ! command -v "$dep" &> /dev/null; then
+    for dep in "${dependencias[@]}"; do[span_13](start_span)[span_13](end_span)
+        if ! command -v "$dep" &> /dev/null; then[span_14](start_span)[span_14](end_span)
             echo -e "${COLOR_ALERTA}[!] Falta componente crítico: '$dep'. Instalando automáticamente...${COLOR_NORMAL}"
             pkg install "$dep" -y
             instalada_alguna=true
@@ -72,18 +76,56 @@ dibujar_banner() {
     echo -e " 🛠️  ZIPPLAY CYBER-MENU (Escribe el número o cualquier comando)" | pv -qL 30
     echo -e "======================================================================"
     echo -e " [1] Actualizar listas de paquetes y repositorios de Termux 🔄"
-    echo -e " [2] Ver comandos de ayuda de Termux (help) ❓"
+    echo -e " [2] 💎 HERRAMIENTAS NATIVAS (Nuestras Creaciones) 💎"
     echo -e " [3] MIS HERRAMIENTAS INSTALADAS (Launcher inteligente) 🚀"
-    echo -e " [4] Cambiar o editar este Banner/Menú 📝"
-    echo -e " [5] Lista de todos los paquetes pkg disponibles 📦"
-    echo -e " [6] Salir al modo normal de Termux (Línea de comandos) 💻"
-    echo -e " [7] CIBERSEGURIDAD Y AUDITORÍA (Auto-instala dependencias) 🛡️"
-    echo -e " [8] ENCYCLOPEDIA LINUX & TERMUX 📚"
+    echo -e " [4] CIBERSEGURIDAD Y AUDITORÍA (Auto-instala dependencias) 🛡️"
+    echo -e " [5] ENCYCLOPEDIA LINUX & TERMUX 📚"
+    echo -e " [6] Ver comandos de ayuda nativos de Termux (help) ❓"
+    echo -e " [7] Cambiar o editar este Banner/Menú 📝"
+    echo -e " [8] Lista de todos los paquetes pkg disponibles 📦"
     echo -e " [9] ELIMINAR HERRAMIENTAS DESCARGADAS 🗑️"
     echo -e "----------------------------------------------------------------------"
+    echo -e " [K] Salir al modo normal de Termux (Línea de comandos) 💻"
     echo -e " [0] Cerrar la aplicación de Termux por completo ❌"
     echo -e "======================================================================\e[0m"
     echo ""
+}
+
+submenu_nativas() {
+    while true; do
+        clear
+        echo -e "${COLOR_INFO}=================================================="
+        echo -e " 💎 SUBMENÚ: HERRAMIENTAS NATIVAS ZIPPLAY"
+        echo -e "--------------------------------------------------"
+        echo -e " Espacio reservado para las herramientas que creemos juntos."
+        echo -e "==================================================${COLOR_NORMAL}"
+        
+        local nativas=($(ls -d "$CARPETA_NATIVAS"/*/ 2>/dev/null))
+        
+        if [ ${#nativas[@]} -eq 0 ]; then
+            echo -e "${COLOR_ALERTA}[!] Próximamente: Nuestro primer script de seguridad.${COLOR_NORMAL}"
+            echo -e "Aquí se guardarán las herramientas nativas protegidas."
+            echo -e "--------------------------------------------------"
+            echo -e " [0] Volver al menú principal 🔙"
+            echo -e "--------------------------------------------------"
+            read -p "ZiP Code > " op_nat
+            break
+        else
+            for i in "${!nativas[@]}"; do
+                echo -e " [$((i+1))] $(basename "${nativas[$i]}")"
+            done
+            echo -e "--------------------------------------------------"
+            echo -e " [0] Volver al menú principal 🔙"
+            echo -e "--------------------------------------------------"
+            read -p "ZiP Native > " op_nat
+            
+            if [ "$op_nat" = "0" ] || [ -z "$op_nat" ]; then break; fi
+            
+            if [[ "$op_nat" =~ ^[0-9]+$ ]] && [ "$op_nat" -gt 0 ] && [ "$op_nat" -le "${#nativas[@]}" ]; then
+                submenu_lanzar_herramienta "${nativas[$((op_nat-1))]}"
+            fi
+        fi
+    done
 }
 
 submenu_ciberseguridad() {
@@ -109,8 +151,7 @@ submenu_ciberseguridad() {
             1)
                 check_install_pkg nmap nmap || continue
                 read -p "Introduce la IP o dominio a escanear: " ip_nmap
-                nmap -sV "$ip_nmap"
-                pausar_y_limpiar ;;
+                if [ -n "$ip_nmap" ]; then nmap -sV "$ip_nmap"; pausar_y_limpiar; fi ;;
             2)
                 check_install_pkg tshark tshark || continue
                 tshark -V 2>/dev/null || echo -e "${COLOR_ERROR}Error: TShark requiere acceso root verificado en tu móvil.${COLOR_NORMAL}"
@@ -118,18 +159,15 @@ submenu_ciberseguridad() {
             3)
                 check_install_pkg nikto nikto || continue
                 read -p "Introduce la URL a auditar con Nikto: " url_nikto
-                nikto -h "$url_nikto"
-                pausar_y_limpiar ;;
+                if [ -n "$url_nikto" ]; then nikto -h "$url_nikto"; pausar_y_limpiar; fi ;;
             4)
                 check_install_pkg sqlmap sqlmap || continue
                 read -p "Introduce la URL vulnerable para Sqlmap: " url_sql
-                sqlmap -u "$url_sql" --batch
-                pausar_y_limpiar ;;
+                if [ -n "$url_sql" ]; then sqlmap -u "$url_sql" --batch; pausar_y_limpiar; fi ;;
             5)
                 check_install_pkg whois whois || continue
                 read -p "Introduce el dominio para WHOIS: " dom_whois
-                whois "$dom_whois"
-                pausar_y_limpiar ;;
+                if [ -n "$dom_whois" ]; then whois "$dom_whois"; pausar_y_limpiar; fi ;;
             0) break ;;
             *) echo -e "${COLOR_ERROR}Opción inválida.${COLOR_NORMAL}"; sleep 1 ;;
         esac
@@ -184,7 +222,7 @@ submenu_enciclopedia() {
             4)
                 clear
                 echo -e "${COLOR_INFO}🚀 SUPERPODERES Y AUTOMATIZACIÓN EN BASH:${COLOR_NORMAL}\n"
-                echo -e "${COLOR_ALERTA}chmod +x <script.sh>${COLOR_NORMAL} -> Le otorga 'permisos de ejecución' a un archivo para volverlo ejecutable."
+                echo -e "${COLOR_ALERTA}chmod +x <script.sh>${COLOR_NORMAL} -> Otorga 'permisos de ejecución' a un archivo para volverlo ejecutable."
                 echo -e "${COLOR_ALERTA}./<ejecutable>${COLOR_NORMAL}       -> Lanza/corre un archivo ejecutable en la carpeta actual."
                 echo -e "${COLOR_ALERTA}source <script.sh>${COLOR_NORMAL}   -> Ejecuta un archivo cargando sus funciones y alias dentro de la terminal activa."
                 echo -e "${COLOR_ALERTA}clear${COLOR_NORMAL}                -> Limpia por completo la pantalla de la terminal."
@@ -265,8 +303,7 @@ while true; do
             pkg update -y
             pausar_y_limpiar ;;
         2)
-            help
-            pausar_y_limpiar ;;
+            submenu_nativas ;;
         3)
             clear
             echo -e "${COLOR_INFO}=================================================="
@@ -274,7 +311,7 @@ while true; do
             echo -e "--------------------------------------------------"
             echo -e " Selecciona una carpeta de herramienta"
             echo -e "==================================================${COLOR_NORMAL}"
-            
+        
             herramientas=($(ls -d */ 2>/dev/null | grep -v "zip-cyber-menu"))
             
             if [ ${#herramientas[@]} -eq 0 ]; then
@@ -299,45 +336,19 @@ while true; do
             fi
             ;;
         4)
-            nano "$HOME/cyber_menu.sh"
+            submenu_ciberseguridad ;;
+        5)
+            submenu_enciclopedia ;;
+        6)
+            help
+            pausar_y_limpiar ;;
+        7)
+            nano "$0" # Superpoder: Edita este mismo script donde sea que esté guardado
             echo -e "${COLOR_EXITO}¡Menú modificado! Vuelve a cargarlo ejecutando 'menu'.${COLOR_NORMAL}"
             sleep 2 ;;
-        5)
+        8)
             pkg list-all | column
             pausar_y_limpiar ;;
-        6)
-            # SALIDA NATIVA: Regresa al usuario al Termux original
-            clear
-            echo -e "Welcome to Termux!"
-            echo ""
-            echo -e "Wiki:            https://termux.dev/wiki"
-            echo -e "Community forum: https://termux.dev/community"
-            echo ""
-            echo -e "${COLOR_INFO}==================================================${COLOR_NORMAL}"
-            echo -e "${COLOR_ALERTA}💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' para reactivar tu entorno ZiP-Cyber.${COLOR_NORMAL}"
-            echo -e "${COLOR_INFO}==================================================${COLOR_NORMAL}\n"
-            export PS1="\$ "
-            break ;;
-        0|exit|quit)
-            # CIERRE TOTAL: Centrado elegante y destrucción del proceso padre
-            clear
-            echo -e "\n\n\n\n\n\n\n\n"
-            echo -e "     ${COLOR_INFO}==================================================${COLOR_NORMAL}"
-            echo -e "            🦊 ¡Gracias por usar ZiP-Cyber! 🦊"
-            echo -e "               Cerrando la aplicación... 👋"
-            echo -e "     ${COLOR_INFO}==================================================${COLOR_NORMAL}"
-            echo -e "\n\n\n\n\n\n\n"
-            sleep 1.4
-            kill -9 $PPID
-            break ;;
-        clear)
-            clear
-            SKIP_BANNER=false
-            ;;
-        7)
-            submenu_ciberseguridad ;;
-        8)
-            submenu_enciclopedia ;;
         9)
             clear
             echo -e "${COLOR_ERROR}=================================================="
@@ -345,7 +356,7 @@ while true; do
             echo -e "--------------------------------------------------"
             echo -e " Selecciona una carpeta para BORRAR"
             echo -e "==================================================${COLOR_NORMAL}"
-            
+       
             herramientas=($(ls -d */ 2>/dev/null | grep -v "zip-cyber-menu"))
             
             if [ ${#herramientas[@]} -eq 0 ]; then
@@ -372,6 +383,35 @@ while true; do
                     fi
                 fi
             fi
+            ;;
+        [Kk])
+            # SALIDA NATIVA: Regresa al usuario al Termux original
+            clear
+            echo -e "Welcome to Termux!"
+            echo ""
+            echo -e "Wiki:            https://termux.dev/wiki"
+            echo -e "Community forum: https://termux.dev/community"
+            echo ""
+            echo -e "${COLOR_INFO}==================================================${COLOR_NORMAL}"
+            echo -e "${COLOR_ALERTA}💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' para reactivar tu entorno ZiP-Cyber.${COLOR_NORMAL}"
+            echo -e "${COLOR_INFO}==================================================${COLOR_NORMAL}\n"
+            export PS1="\$ "
+            break ;;
+        0|exit|quit)
+            # CIERRE TOTAL: Destrucción elegante del proceso de Termux
+            clear
+            echo -e "\n\n\n\n\n\n\n\n"
+            echo -e "     ${COLOR_INFO}==================================================${COLOR_NORMAL}"
+            echo -e "            🦊 ¡Gracias por usar ZiP-Cyber! 🦊"
+            echo -e "               Cerrando la aplicación... 👋"
+            echo -e "     ${COLOR_INFO}==================================================${COLOR_NORMAL}"
+            echo -e "\n\n\n\n\n\n\n"
+            sleep 1.4
+            kill -9 $PPID
+            break ;;
+        clear)
+            clear
+            SKIP_BANNER=false
             ;;
         *)
             if [ -n "$opcion_principal" ]; then
