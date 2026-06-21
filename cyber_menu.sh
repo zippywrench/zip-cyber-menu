@@ -92,7 +92,12 @@ dibujar_banner() {
 }
 
 submenu_nativas() {
-    while true; do
+    while true; do # Activador de permisos automáticos en silencio
+    for script in "$CARPETA_NATIVAS"/*.sh; do
+        if [ -f "$script" ] && [ ! -x "$script" ]; then
+            chmod +x "$script"
+        fi
+        done
         clear
         echo -e "${COLOR_INFO}=================================================="
         echo -e " 💎 SUBMENÚ: HERRAMIENTAS NATIVAS ZIPPLAY"
