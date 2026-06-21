@@ -100,7 +100,7 @@ submenu_nativas() {
         echo -e " Espacio reservado para las herramientas que creemos juntos."
         echo -e "==================================================${COLOR_NORMAL}"
         
-        local nativas=($(ls -d "$CARPETA_NATIVAS"/*/ 2>/dev/null))
+        local nativas=($(ls "$CARPETA_NATIVAS"/*.sh 2>/dev/null))
         
         if [ ${#nativas[@]} -eq 0 ]; then
             echo -e "${COLOR_ALERTA}[!] Próximamente: Nuestro primer script de seguridad.${COLOR_NORMAL}"
@@ -242,7 +242,7 @@ submenu_lanzar_herramienta() {
     echo -e "==================================================${COLOR_NORMAL}"
     cd "$carpeta_herr" || { echo -e "${COLOR_ERROR}No se pudo entrar en la carpeta.${COLOR_NORMAL}"; return; }
 
-    local ejecutables=($(find . -maxdepth 1 -type f -not -path '*/.*' -not -iname "readme*" -not -iname "license*" -not -iname "*.txt"))
+    local ejecutables=($(find "$CARPETA_NATIVAS" -maxdepth 1 -type f -not -path '*/.*' -not -iname "readme*" -not -iname "license*" -not -iname "*.txt"))
 
     if [ ${#ejecutables[@]} -eq 0 ]; then
         echo -e "${COLOR_ALERTA}No se encontraron archivos ejecutables en la raíz.${COLOR_NORMAL}"
