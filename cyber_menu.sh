@@ -308,8 +308,8 @@ while true; do
 
     case "$opcion_principal" in
         1)
-            echo -e "${COLOR_INFO}[*] Sincronizando repositorios de Termux...${COLOR_NORMAL}"
-            pkg update -y
+            echo -e "${COLOR_INFO}[*] Sincronizando y actualizando repositorios de Termux...${COLOR_NORMAL}"
+            pkg update && pkg upgrade -y
             pausar_y_limpiar ;;
         2)
             submenu_nativas ;;
