@@ -243,17 +243,19 @@ submenu_lanzar_herramienta() {
     local carpeta_herr=$1
     clear
     echo -e "${COLOR_INFO}=================================================="
-    echo -e " 🚀 LANZADOR DE HERRAMIENTA: $carpeta_herr"
+    echo -e " 🚀 LANZADOR DE HERRAMIENTA: $(basename "$carpeta_herr")"
     echo -e "==================================================${COLOR_NORMAL}"
-    cd "$carpeta_herr" || { echo -e "${COLOR_ERROR}No se pudo entrar en la carpeta.${COLOR_NORMAL}"; return; }
+    
+    # 1. Entramos a la carpeta de la herramienta
+    cd "$HOME/$carpeta_herr" || cd "$carpeta_herr" 2>/dev/null || { echo -e "${COLOR_ERROR}No se pudo entrar en la carpeta.${COLOR_NORMAL}"; return; }
 
-    local ejecutables=($(find "$CARPETA_NATIVAS" -maxdepth 1 -type f -not -path '*/.*' -not -iname "readme*" -not -iname "license*" -not -iname "*.txt"))
+    # 2. Buscamos archivos ejecutables locales de forma limpia (.)
+    local ejecutables=($(find . -maxdepth 1 -type f -not -path '*/.*' -not -iname "readme*" -not -iname "license*" -not -iname "*.txt"))
 
-    if [ ${#ejecutables[@]} -eq 0 ]; then
-        echo -e "${COLOR_ALERTA}No se encontraron archivos ejecutables en la raíz.${COLOR_NORMAL}"
-        echo -e "Contenido de la carpeta:"
+    if [ ${#ejecutables[@]} -eq 0 ] || [ -z "${ejecutables[0]}" ]; then
+        echo -e "${COLOR_ALERTA}[!] No se encontraron scripts ejecutables aquí dentro.${COLOR_NORMAL}"
+        echo -e "Contenido real de la carpeta:"
         ls -F --color=always
-        echo ""
         pausar_y_limpiar
     else
         for i in "${!ejecutables[@]}"; do
@@ -270,18 +272,20 @@ submenu_lanzar_herramienta() {
             script_elegido=$(echo "${ejecutables[$((op_exec-1))]}" | sed 's|^./||')
             clear
             
+            chmod +x "$script_elegido" 2>/dev/null
+            
             if [[ "$script_elegido" == *.py ]]; then
                 check_install_pkg python python
                 python "$script_elegido"
             elif [[ "$script_elegido" == *.sh ]]; then
                 bash "$script_elegido"
             else
-                chmod +x "$script_elegido"
                 ./"$script_elegido" || bash "$script_elegido"
             fi
             pausar_y_limpiar
         fi
     fi
+    # 3. ¡SIEMPRE VOLVER A LA RAÍZ AL TERMINAR!
     cd "$HOME"
 }
 
