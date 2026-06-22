@@ -100,7 +100,7 @@ submenu_nativas() {
         done
         clear
         echo -e "${COLOR_INFO}=================================================="
-        echo -e " 💎 SUBMENÚ: HERRAMIENTAS NATIVAS ZIPPLAY"
+        echo -e " 💎 SUBMENÚ: HERRAMIENTAS NATIVAS ZIPPLAY"| pv -qL 30
         echo -e "--------------------------------------------------"
         echo -e " Espacio reservado para las herramientas que creemos juntos."
         echo -e "==================================================${COLOR_NORMAL}"
@@ -243,7 +243,7 @@ submenu_lanzar_herramienta() {
     local carpeta_herr=$1
     clear
     echo -e "${COLOR_INFO}=================================================="
-    echo -e " 🚀 LANZADOR DE HERRAMIENTA: $(basename "$carpeta_herr")"
+    echo -e " 🚀 LANZADOR DE HERRAMIENTAS DESCARGADAS"| pv -qL 30
     echo -e "==================================================${COLOR_NORMAL}"
     
     # 1. Entramos a la carpeta de la herramienta
@@ -316,7 +316,7 @@ while true; do
         3)
             clear
             echo -e "${COLOR_INFO}=================================================="
-            echo -e " 📂 SUBMENÚ: MIS HERRAMIENTAS INSTALADAS"
+            echo -e " 📂 SUBMENÚ: MIS HERRAMIENTAS INSTALADAS"| pv -qL 30
             echo -e "--------------------------------------------------"
             echo -e " Selecciona una carpeta de herramienta"
             echo -e "==================================================${COLOR_NORMAL}"
@@ -362,7 +362,7 @@ while true; do
         9)
             clear
             echo -e "${COLOR_ERROR}=================================================="
-            echo -e " 🗑️  SUBMENÚ: ELIMINAR HERRAMIENTAS DESCARGADAS"
+            echo -e " 🗑️  SUBMENÚ: ELIMINAR HERRAMIENTAS DESCARGADAS"| pv -qL 30
             echo -e "--------------------------------------------------"
             echo -e " Selecciona una carpeta para BORRAR"
             echo -e "==================================================${COLOR_NORMAL}"
@@ -415,7 +415,7 @@ while true; do
                     echo -e "Wiki:            https://termux.dev"
                     echo -e "Community forum: https://termux.dev"
                     echo -e "--------------------------------------------------"
-                    echo -e "${COLOR_ALERTA} 💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' para reactivar tu entorno seguro${COLOR_NORMAL}/ escribe '${COLOR_EXITO}exit${COLOR_ALERTA}' para salir de la proteccion${COLOR_NORMAL}"| pv -qL 25
+                    echo -e "${COLOR_ALERTA} 💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' para reactivar tu entorno seguro${COLOR_NORMAL} O '${COLOR_EXITO}exit${COLOR_ALERTA}' para salir de la proteccion${COLOR_NORMAL}"| pv -qL 25
                     echo -e "--------------------------------------------------"
                     
                     # Línea de comandos simulada nativa (A prueba de tontos y libre de alias externos)
