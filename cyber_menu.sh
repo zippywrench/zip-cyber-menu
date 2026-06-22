@@ -37,6 +37,28 @@ preparar_entorno() {
         echo -e "\n${COLOR_EXITO}[+] ¡Todo listo! Todos los componentes han sido configurados.${COLOR_NORMAL}"
         sleep 2
     fi
+
+    # ==============================================================================
+    # MÓDULO DE INICIO AUTOMÁTICO (INYECTOR BASHRC)
+    # ==============================================================================
+    local archivo_inicio="$HOME/.bashrc"
+    local linea_comando="bash \$HOME/zip-cyber-menu/cyber_menu.sh"
+
+    # Si el archivo .bashrc no existe, lo creamos
+    if [ ! -f "$archivo_inicio" ]; then
+        touch "$archivo_inicio"
+    fi
+
+    # Verificamos si ya inyectamos el comando antes para no duplicarlo
+    if ! grep -q "cyber_menu.sh" "$archivo_inicio"; then
+        echo -e "${COLOR_INFO}[*] Configurando inicio automático del menú en Termux...${COLOR_NORMAL}"
+        echo "" >> "$archivo_inicio"
+        echo "# Inicio automático de ZiPPLAY Cyber-Menu 🦊" >> "$archivo_inicio"
+        echo "$linea_comando" >> "$archivo_inicio"
+        echo -e "${COLOR_EXITO}[+] ¡Inicio automático configurado con éxito!${COLOR_NORMAL}"
+        sleep 1
+    fi
+
 }
 
 check_install_pkg() {
@@ -415,7 +437,7 @@ while true; do
                     echo -e "Wiki:            https://termux.dev"
                     echo -e "Community forum: https://termux.dev"
                     echo -e "--------------------------------------------------"
-                    echo -e "${COLOR_ALERTA} 💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' para reactivar tu entorno seguro${COLOR_NORMAL} O '${COLOR_EXITO}exit${COLOR_ALERTA}' para salir de la proteccion${COLOR_NORMAL}"| pv -qL 25
+                    echo -e "${COLOR_ALERTA} 💡 TIP: Escribe '${COLOR_EXITO}menu${COLOR_ALERTA}' para reactivar tu entorno seguro${COLOR_NORMAL} O '${COLOR_EXITO}exit${COLOR_ALERTA}' para salir de la proteccion${COLOR_NORMAL}"| pv -qL 35
                     echo -e "--------------------------------------------------"
                     
                     # Línea de comandos simulada nativa (A prueba de tontos y libre de alias externos)
