@@ -15,7 +15,7 @@ Para instalar y ejecutar este menú en tu Termux, copia y pega los siguientes co
 
 ```bash
 pkg update && pkg upgrade -y
-pkg install git bash -y
+pkg install git bash ssh wget python pv nano curl php ngrok -y
 git clone https://github.com/zippywrench/zip-cyber-menu.git
 cd zip-cyber-menu
 chmod +x cyber_menu.sh
